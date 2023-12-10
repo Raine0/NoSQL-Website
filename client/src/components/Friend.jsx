@@ -6,7 +6,7 @@ import { setFriends } from "state";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
 
-const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
+const Friend = ({ friendId, name, subtitle, userPicturePath, showFriendButton }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { _id } = useSelector((state) => state.user);
@@ -45,7 +45,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   return (
     <FlexBetween>
       <FlexBetween gap="1rem">
-        <UserImage image={userPicturePath} size="55px" />
+        <UserImage image={userPicturePath} size={showFriendButton ? '55px' : '35px'} showFriendButton={showFriendButton} />
         <Box
           onClick={() => {
             navigate(`/profile/${friendId}`);
@@ -70,8 +70,8 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
           </Typography>
         </Box>
       </FlexBetween>
-      {/* Conditionally render the IconButton */}
-      {friendId !== _id && (
+      {/* Conditionally render the IconButton based on showFriendButton prop */}
+      {showFriendButton && friendId !== _id && (
         <IconButton onClick={() => patchFriend()} sx={{ backgroundColor: primaryLight, p: "0.6rem" }}>
           {isFriend ? (
             <PersonRemoveOutlined sx={{ color: primaryDark }} />

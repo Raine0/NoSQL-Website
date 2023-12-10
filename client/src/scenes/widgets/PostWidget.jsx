@@ -24,6 +24,7 @@ const PostWidget = ({
   userPicturePath,
   likes,
   comments,
+  showFriendButton, // Add this prop
 }) => {
   const [isComments, setIsComments] = useState(false);
   const [newComment, setNewComment] = useState("");
@@ -51,18 +52,36 @@ const PostWidget = ({
   };
 
   const submitComment = async () => {
-    const response = await fetch(`http://localhost:3001/posts/${postId}/comment`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userId: loggedInUserId, text: newComment }),
-    });
-    const updatedPost = await response.json();
-    dispatch(setPost({ post: updatedPost }));
-    setNewComment(""); // Clear the input field after submitting the comment
+    try {
+      const response = await fetch(`http://localhost:3001/posts/${postId}/comment`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: loggedInUserId, text: newComment }),
+      });
+  
+      if (!response.ok) {
+        // Handle error
+        console.error('Error adding comment:', response.statusText);
+        return;
+      }
+  
+      const { user: { firstName, lastName }, text } = await response.json();
+  
+      // Assuming 'setPost' is a dispatch action that updates the post in your Redux store
+      dispatch(setPost((prevPost) => ({
+        ...prevPost,
+        comments: [...prevPost.comments, { text, user: { firstName, lastName } }],
+      })));
+  
+      setNewComment(""); // Clear the input field after submitting the comment
+    } catch (err) {
+      console.error('Error adding comment:', err.message);
+    }
   };
+  
 
   return (
     <WidgetWrapper m="2rem 0">
@@ -71,6 +90,7 @@ const PostWidget = ({
         name={name}
         subtitle={location}
         userPicturePath={userPicturePath}
+        showFriendButton={true}
       />
       <Typography color={main} sx={{ mt: "1rem" }}>
         {description}
@@ -105,18 +125,45 @@ const PostWidget = ({
           </FlexBetween>
         </FlexBetween>
 
-        <IconButton>
+        {/* <IconButton>
           <ShareOutlined />
-        </IconButton>
+        </IconButton> */}
       </FlexBetween>
       {isComments && (
         <Box mt="0.5rem">
           {comments.map((comment, i) => (
             <Box key={`${name}-${i}`}>
               <Divider />
-              <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
-                {comment.text}
-              </Typography>
+              <FlexBetween alignItems="center" sx={{ m: "0.5rem 0", pl: "1rem" }}>
+                {comment.userPicturePath && (
+                  <Friend
+                    friendId={comment.userId}
+                    userPicturePath={comment.userPicturePath}
+                    name={comment.userName}
+                    showFriendButton={false}
+                    sx={{
+                      ml: "1rem",
+                      display: "flex",  // Ensure the elements are displayed in a flex container
+                      alignItems: "center",  // Align items vertically in the center
+                      "& img": {
+                        width: "30px",  // Adjust the width as needed
+                        height: "30px", // Adjust the height as needed
+                        objectFit: "cover",
+                        borderRadius: "50%",
+                      },
+                      "& .MuiTypography-root": {
+                        fontSize: "14px", // Adjust the font size for the name
+                        marginLeft: "0.5rem",  // Add margin to separate the name from other elements
+                      },
+                      "& .MuiIconButton-root": {
+                        fontSize: "16px", // Adjust the font size for the IconButton
+                        marginLeft: "0.5rem",  // Add margin to separate the button from other elements
+                      },
+                    }}
+                  />
+                )}
+                <Typography sx={{ color: main, ml: "1rem" }}>{comment.text}</Typography>
+              </FlexBetween>
             </Box>
           ))}
           <Divider />

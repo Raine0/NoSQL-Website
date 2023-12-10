@@ -57,7 +57,10 @@ const UserWidget = ({ userId, picturePath }) => {
         onClick={() => navigate(`/profile/${userId}`)}
       >
         <FlexBetween gap="1rem">
-          <UserImage image={picturePath} />
+          <UserImage 
+            image={picturePath}
+            showFriendButton={true}
+          />
           <Box>
             <Typography
               variant="h4"
