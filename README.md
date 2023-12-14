@@ -2,6 +2,7 @@
 
 Build a COMPLETE Fullstack Responsive MERN App with Auth, Likes, Dark Mode | React, MongoDB, MUI
 
+
 Installtion of Packages:
 
 
@@ -14,12 +15,14 @@ cd server
 
 npm install
 
+
 2nd:
 open new terminal
 
 cd client
 
 npm install
+
 
 Para ma run:
 
@@ -29,6 +32,7 @@ open terminal
 cd server
 
 npm start
+
 
 2nd:
 open new terminal
