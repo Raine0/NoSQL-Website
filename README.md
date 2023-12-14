@@ -11,12 +11,14 @@ Ari guys para mainstall akoa ahahahhaha
 open terminal
 
 cd server
+
 npm install
 
 2nd:
 open new terminal
 
 cd client
+
 npm install
 
 Para ma run:
@@ -25,10 +27,12 @@ Para ma run:
 open terminal
 
 cd server
+
 npm start
 
 2nd:
 open new terminal
 
 cd client
+
 npm start
