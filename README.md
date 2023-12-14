@@ -2,7 +2,17 @@
 
 Build a COMPLETE Fullstack Responsive MERN App with Auth, Likes, Dark Mode | React, MongoDB, MUI
 
-Video: https://www.youtube.com/watch?v=K8YELRmUb5o
+Installtion of Packages:
 
-For all related questions and discussions about this project, check out the discord: https://discord.gg/2FfPeEk2mX
-"# NoSQL-Website" 
+1st:
+open terminal
+
+cd server
+npm i -g nodemon
+npm i express body-parser bcrypt cors dotenv gridfs-stream multer multer-gridfs-storage helmet morgan jsobwebtoken mongoose
+
+2nd:
+open new terminal
+
+cd client
+npm i react-redux @reduxjs/toolkit redux-persist react-dropzone dotenv formik yup react-router-dom@6 @mui/material @emotion/react @emotion/styled @mui/icons-material
