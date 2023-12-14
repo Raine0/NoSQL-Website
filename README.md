@@ -8,7 +8,9 @@ open terminal
 
 cd server
 
-npm install
+sudo npm i -g nodemon
+
+npm install --force
 
 
 2nd:
